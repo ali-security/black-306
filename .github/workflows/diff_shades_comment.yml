@@ -1,9 +1,7 @@
 name: diff-shades-comment
 
 on:
-  workflow_run:
-    workflows: [diff-shades]
-    types: [completed]
+  workflow_dispatch:
 
 permissions:
   pull-requests: write

@@ -1,8 +1,7 @@
 name: changelog
 
 on:
-  pull_request:
-    types: [opened, synchronize, labeled, unlabeled, reopened]
+  workflow_dispatch:
 
 permissions:
   contents: read
