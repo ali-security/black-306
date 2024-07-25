@@ -17,6 +17,7 @@ STRING_PREFIX_CHARS: Final = "furbFURB"  # All possible string prefix characters
 STRING_PREFIX_RE: Final = re.compile(
     r"^([" + STRING_PREFIX_CHARS + r"]*)(.*)$", re.DOTALL
 )
+FIRST_NON_WHITESPACE_RE: Final = re.compile(r"\s*\t+\s*(\S)")
 
 
 def sub_twice(regex: Pattern[str], replacement: str, original: str) -> str:
@@ -38,7 +39,6 @@ def has_triple_quotes(string: str) -> bool:
 
 
 def lines_with_leading_tabs_expanded(s: str) -> List[str]:
-    """Normalize leading tabs in the provided string."""
     """
     Splits string into lines and expands only leading tabs (following the normal
     Python rules)
@@ -47,7 +47,9 @@ def lines_with_leading_tabs_expanded(s: str) -> List[str]:
     for line in s.splitlines():
         # Find the index of the first non-whitespace character after a string of
         # whitespace that includes at least one tab
+        match = FIRST_NON_WHITESPACE_RE.match(line)
         if match:
+            first_non_whitespace_idx = match.start(1)
 
             lines.append(
                 line[:first_non_whitespace_idx].expandtabs()
@@ -138,6 +140,7 @@ def assert_is_leaf_string(string: str) -> None:
 
 def normalize_string_prefix(s: str) -> str:
     """Make all string prefixes lowercase."""
+    match = STRING_PREFIX_RE.match(s)
     assert match is not None, f"failed to match string {s!r}"
     orig_prefix = match.group(1)
     new_prefix = (
