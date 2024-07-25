@@ -233,5 +233,3 @@ def normalize_string_quotes(s: str) -> str:
         return s  # Prefer double quotes
 
     return f"{prefix}{new_quote}{new_body}{new_quote}"
-    lines = []
-    for line in s.splitlines():
